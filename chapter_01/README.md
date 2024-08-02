@@ -1,0 +1,9 @@
+# 기본과제
+
+## 게시판 서버 만들기
+
+1. POST method 게시글 작성
+2. GET method 목록 조회
+3. GET method 게시글 상세 조회
+4. PUT method 게시글 수정
+5. DELETE method 게시글 삭제
