@@ -1,16 +1,35 @@
 package com.example.crud_test.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
-import java.util.Map;
 
-@RestController
-@RequestMapping("/api/board")
 public class BoardController {
-    @GetMapping
-    public List<Map<String,String>> getList(){
-        return List.of(Map.of("key","value"));
+    //게시글 목록 조회
+    @GetMapping ("/")
+    public String getBoardList() {
+        return "boardList";
+    }
+
+    //게시글 상세 조회
+    @GetMapping ("/{boardId}")
+    public String getBoardDetail() {
+        return "boardDetail";
+    }
+
+    //게시글 등록
+    @GetMapping ("/new")
+    public String createBoard() {
+        return "createBoard";
+    }
+
+    //게시글 수정
+    @GetMapping ("/{boardId}/edit")
+    public String editBoard() {
+        return "editBoard";
+    }
+
+    //게시글 삭제
+    @GetMapping ("/{boardId}/delete")
+    public String deleteBoard() {
+        return "deleteBoard";
     }
 }
