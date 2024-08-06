@@ -1,35 +1,63 @@
 package com.example.crud_test.controller;
 
+import com.example.crud_test.entity.Board;
+import com.example.crud_test.entity.Members;
+import com.example.crud_test.service.BoardService;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/boards")
 public class BoardController {
+
+    private final BoardService service;
+
+    public BoardController(BoardService service) {
+        this.service = service;
+    }
+    //로그인
+
+    @PostMapping("/login")
+    public String login(@RequestBody Members members) {
+        return service.login(members.getEmail(), members.getPassword());
+    }
+
+
     //게시글 목록 조회
-    @GetMapping ("/")
-    public String getBoardList() {
-        return "boardList";
+    @GetMapping
+    public List<Board> getBoardList() {
+        return service.getBoardList();
     }
 
     //게시글 상세 조회
     @GetMapping ("/{boardId}")
-    public String getBoardDetail() {
-        return "boardDetail";
+    public Board getBoardDetail(@PathVariable Long boardId) {
+        return service.getPostById(boardId);
     }
 
     //게시글 등록
-    @GetMapping ("/new")
-    public String createBoard() {
-        return "createBoard";
+    @PostMapping
+    public Board createBoard(@RequestBody Board board) {
+        return service.createBoard(board);
     }
 
     //게시글 수정
-    @GetMapping ("/{boardId}/edit")
-    public String editBoard() {
-        return "editBoard";
+    @PutMapping ("/{boardId}/edit")
+    public void editBoard(@PathVariable Long boardId, @RequestBody Board board) {
+        service.editBoard(boardId, board);
     }
 
     //게시글 삭제
-    @GetMapping ("/{boardId}/delete")
-    public String deleteBoard() {
-        return "deleteBoard";
+    @DeleteMapping ("/{boardId}/delete")
+    public void deleteBoard(@PathVariable Long boardId) {
+        service.deletePost(boardId);
     }
 }

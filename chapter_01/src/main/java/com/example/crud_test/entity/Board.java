@@ -1,11 +1,13 @@
 package com.example.crud_test.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.Id;
 
-@Entity
+import java.util.Objects;
+
+//@Entity
 public class Board {
-    @Id
+ //   @Id
     private Long id;
     private String title;
     private String content;
@@ -42,6 +44,23 @@ public class Board {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if(o==null || getClass() != o.getClass()) {
+            return false;
+        }
+        Board board = (Board) o;
+        return Objects.equals(id, board.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     //toString
