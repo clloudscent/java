@@ -36,5 +36,4 @@ public class MemberController {
   public ResponseEntity<List<Members>> getMembers(HttpSession session){
     return service.getList(session);
   }
-
 }
