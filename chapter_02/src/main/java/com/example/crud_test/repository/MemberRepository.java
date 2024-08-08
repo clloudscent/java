@@ -19,7 +19,7 @@ public class MemberRepository {
     }
 
     public Optional<Members> findByEmail(String email){
-        return MEMBERS.stream().filter(b->b.getEmail().equals(email)).findFirst();
+        return MEMBERS.stream().filter(b-> b.getEmail().equals(email)).findFirst();
     }
 
     public Members save(Members members){
@@ -34,6 +34,7 @@ public class MemberRepository {
             db.setEmail(members.getEmail());
             db.setName(members.getName());
             db.setPassword(members.getPassword());
+            return db;
         }
         return members;
     }
