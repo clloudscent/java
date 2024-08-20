@@ -1,5 +1,7 @@
 package com.example.board.domain.user.entity;
 
+import com.example.board.dto.request.SignupRequest;
+
 import java.time.LocalDateTime;
 
 public class BoardUser {
@@ -57,5 +59,13 @@ public class BoardUser {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void setNewUser(SignupRequest body) {
+        this.setEmail(body.getEmail());
+        this.setPassword(body.getPassword());
+        this.setNickname(body.getNickname());
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }
