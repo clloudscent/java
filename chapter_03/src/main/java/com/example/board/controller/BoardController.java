@@ -2,6 +2,7 @@ package com.example.board.controller;
 
 import com.example.board.domain.board.entity.Board;
 import com.example.board.service.BoardService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,18 +42,18 @@ public class BoardController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Board postBoard(@RequestBody Board post){
-        return service.postBoard(post);
+    public Board postBoard(HttpSession session, @RequestBody Board post){
+        return service.postBoard(session, post);
     }
 
     @PutMapping("/{board-id}")
-    public Board modifyBoard(@PathVariable("board-id") Long boardId,@RequestBody Board post){
-        return service.modifyBoard(boardId, post);
+    public Board modifyBoard(HttpSession session, @PathVariable("board-id") Long boardId,@RequestBody Board post){
+        return service.modifyBoard(session, boardId, post);
     }
 
     @DeleteMapping("/{board-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDetail(@PathVariable("board-id") Long boardId){
-        service.deleteOne(boardId);
+    public void deleteDetail(HttpSession session, @PathVariable("board-id") Long boardId){
+        service.deleteOne(session, boardId);
     }
 }

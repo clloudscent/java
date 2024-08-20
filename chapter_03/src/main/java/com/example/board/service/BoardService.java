@@ -3,6 +3,7 @@ package com.example.board.service;
 import com.example.board.domain.board.entity.Board;
 import com.example.board.domain.user.entity.BoardUser;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -42,20 +43,30 @@ public class BoardService {
     }
 
     public Board getOne(Long boardId){
-        return REPOSITORY.stream().filter(b-> Objects.equals(b.getId(), boardId)).findFirst().orElse(null);
+        Board post = REPOSITORY.stream().filter(b-> Objects.equals(b.getId(), boardId)).findFirst().orElse(null);
+
+        if( post == null){
+            throw new RuntimeException("not exist post!!!!!");
+        }
+        return post;
     }
 
-    public Board postBoard(Board board){
+    public Board postBoard(HttpSession session, Board board){
+        BoardUser authUser = checkAuthenticate(session);
+
         long max = REPOSITORY.stream().mapToLong(Board::getId).max().orElse(1);
+
         board.setId(max+1);
+        board.setWriter(authUser);
         board.setCreatedAt(LocalDateTime.now());
         board.setUpdatedAt(LocalDateTime.now());
         REPOSITORY.add(board);
         return board;
     }
 
-    public Board modifyBoard(Long boardId, Board post) {
-        Board board = REPOSITORY.stream().filter(b->b.getId().equals(boardId)).findFirst().orElseThrow(RuntimeException::new);
+    public Board modifyBoard(HttpSession session, Long boardId, Board post) {
+        Board board = checkMine(session,boardId);
+
         if(post.getTitle() != null)
             board.setTitle(post.getTitle());
 
@@ -65,8 +76,31 @@ public class BoardService {
         return board;
     }
 
-    public void deleteOne(Long boardId){
-        Board board = REPOSITORY.stream().filter(b->b.getId().equals(boardId)).findFirst().orElseThrow(RuntimeException::new);
-        REPOSITORY.remove(board);
+    public void deleteOne(HttpSession session, Long boardId){
+        Board post = checkMine(session,boardId);
+        REPOSITORY.remove(post);
+    }
+
+    // 로그인한 유저가 작성한 포스트 검증
+    private Board checkMine(HttpSession session, Long boardId){
+        BoardUser authUser = checkAuthenticate(session);
+
+        Board post = getOne(boardId);
+
+        if (!post.getWriter().getId().equals(authUser.getId())) {
+            throw new RuntimeException("not your post!!!!!");
+        }
+        return post;
+    }
+
+    // 로그인 상태 검증
+    private BoardUser checkAuthenticate(HttpSession session){
+        BoardUser auth = (BoardUser) session.getAttribute("auth");
+
+        if(auth == null){
+            throw new RuntimeException("not authenticated!!");
+        }
+
+        return auth;
     }
 }
