@@ -21,6 +21,7 @@ public class BoardController {
 
     // 개발순서
     // 1. 기능 목록 정의 : 컨트롤러 정의
+    // 2. 비즈니스 로직 구현 : 서비스 클래스 정의
 
     private final BoardService service;
 
@@ -30,33 +31,28 @@ public class BoardController {
 
     @GetMapping
     public List<Board> getPages(){
-//        return service.getList();
-        return List.of();
+        return service.getList();
     }
 
     @GetMapping("/{board-id}")
     public Board getDetail(@PathVariable("board-id") Long boardId){
-//        return service.getOne(boardId);
-        return null;
+        return service.getOne(boardId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Board postBoard(@RequestBody Board post){
-//        return service.postBoard(post);
-        return post;
+        return service.postBoard(post);
     }
 
     @PutMapping("/{board-id}")
     public Board modifyBoard(@PathVariable("board-id") Long boardId,@RequestBody Board post){
-//        return service.modifyBoard(boardId, post);
-        return post;
+        return service.modifyBoard(boardId, post);
     }
 
     @DeleteMapping("/{board-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDetail(@PathVariable("board-id") Long boardId){
-//        service.deleteOne(boardId);
-
+        service.deleteOne(boardId);
     }
 }
