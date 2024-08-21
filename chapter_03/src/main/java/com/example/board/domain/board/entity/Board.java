@@ -9,8 +9,17 @@ public class Board {
     private String title;
     private String content;
     private BoardUser writer;
+    private int viewCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
+    }
 
     public Long getId() {
         return id;

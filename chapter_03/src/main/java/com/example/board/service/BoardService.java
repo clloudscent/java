@@ -52,7 +52,7 @@ public class BoardService {
     }
 
     public Board postBoard(HttpSession session, Board board){
-        BoardUser authUser = checkAuthenticate(session);
+        BoardUser authUser = getPrincipal(session);
 
         long max = REPOSITORY.stream().mapToLong(Board::getId).max().orElse(1);
 
@@ -83,8 +83,7 @@ public class BoardService {
 
     // 로그인한 유저가 작성한 포스트 검증
     private Board checkMine(HttpSession session, Long boardId){
-        BoardUser authUser = checkAuthenticate(session);
-
+        BoardUser authUser = getPrincipal(session);
         Board post = getOne(boardId);
 
         if (!post.getWriter().getId().equals(authUser.getId())) {
@@ -94,13 +93,12 @@ public class BoardService {
     }
 
     // 로그인 상태 검증
-    private BoardUser checkAuthenticate(HttpSession session){
-        BoardUser auth = (BoardUser) session.getAttribute("auth");
+    private BoardUser getPrincipal(HttpSession session){
+        return (BoardUser) session.getAttribute("auth");
+    }
 
-        if(auth == null){
-            throw new RuntimeException("not authenticated!!");
-        }
-
-        return auth;
+    public void increaseViewCount(Long boardId){
+        Board board = getOne(boardId);
+        board.setViewCount(board.getViewCount()+1);
     }
 }
