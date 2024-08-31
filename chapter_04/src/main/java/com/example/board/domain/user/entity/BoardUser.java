@@ -2,14 +2,28 @@ package com.example.board.domain.user.entity;
 
 import com.example.board.domain.user.entity.type.UserStatus;
 import com.example.board.dto.request.SignupRequest;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
+@Entity
 public class BoardUser {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "INT UNSIGNED")
     private Long id;
     private String nickname;
     private String email;
     private String password;
+    @Column(columnDefinition = "TINYINT UNSIGNED")
     private int failCount;
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -96,5 +110,23 @@ public class BoardUser {
 
     public void loginSuccess() {
         this.failCount = 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        BoardUser boardUser = (BoardUser) o;
+        return Objects.equals(id, boardUser.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

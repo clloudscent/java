@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: chapter_04
+  datasource:
+    url: jdbc:mysql://localhost:3306/board_service
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: asdf1234
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
