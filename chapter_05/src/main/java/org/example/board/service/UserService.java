@@ -9,6 +9,7 @@ import org.example.board.repository.BoardUserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -19,21 +20,7 @@ public class UserService {
         this.repository = repository;
     }
 
-    public ResponseEntity<CommonResponse> login(HttpServletRequest request, LoginRequest body){
-        //로그인하려는 계정이 있는 지 확인해야함
-        BoardUser user = getUserInfo(body.getEmail());
-
-        // not exists user info
-        if( user == null || !user.getPassword().equals(body.getPassword())){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(CommonResponse.of("fail authenticate"));
-        }
-
-        // save authenticate info in session
-        request.getSession().setAttribute("auth",user);
-
-        return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.of("OK"));
-    }
-
+    @Transactional
     public ResponseEntity<CommonResponse> signUp(SignupRequest body){
         BoardUser user = getUserInfo(body.getEmail());
 
@@ -52,5 +39,10 @@ public class UserService {
 
     public BoardUser getUserInfo(String email){
         return repository.findByEmail(email).orElse(null);
+    }
+
+    @Transactional
+    public void save(BoardUser user) {
+        repository.save(user);
     }
 }

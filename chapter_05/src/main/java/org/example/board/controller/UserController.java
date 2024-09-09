@@ -26,9 +26,4 @@ public class UserController {
         return service.signUp(body);
     }
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<CommonResponse> authenticate(HttpServletRequest request, @RequestBody LoginRequest body){
-        return service.login(request,body);
-    }
-
 }

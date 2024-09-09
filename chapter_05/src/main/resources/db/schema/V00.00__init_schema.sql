@@ -29,3 +29,13 @@ CREATE TABLE `board` (
     `updated_at` DATETIME NULL,
     CONSTRAINT `fk_board_writer_id` FOREIGN KEY (`writer_id`) REFERENCES `board_user`(`id`)
 ) COMMENT 'board table';
+
+CREATE TABLE `comment` (
+    `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'PK',
+    `content` VARCHAR(300) NOT NULL COMMENT 'comment',
+    `board_id` INT UNSIGNED NOT NULL,
+    `writer_id` INT UNSIGNED NOT NULL,
+    `created_at` DATETIME NOT NULL,
+    CONSTRAINT `fk_comment_board_id` FOREIGN KEY (`board_id`) REFERENCES `board`(`id`),
+    CONSTRAINT `fk_comment_writer_id` FOREIGN KEY (`writer_id`) REFERENCES `board_user`(`id`)
+) COMMENT 'comment table';

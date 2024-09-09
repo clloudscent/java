@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import org.example.board.dto.request.SignupRequest;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class BoardUser {
@@ -96,5 +97,20 @@ public class BoardUser {
         this.setPassword(body.getPassword());
         this.setNickname(body.getNickname());
         this.setActivate(true);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BoardUser boardUser = (BoardUser) o;
+
+        return Objects.equals(this.id, boardUser.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.id);
     }
 }
