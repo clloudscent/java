@@ -56,4 +56,9 @@ public class BoardController {
     public ResponseEntity<Void> deleteComment(HttpSession session, @PathVariable("board-id") Long boardId, @PathVariable("comment-id") Long commentId){
         return service.deleteComment((BoardUser)session.getAttribute("auth"), boardId, commentId);
     }
+
+    @GetMapping("/{board-id}/comment")
+    public Page<CommentResponse> getComment(@PathVariable("board-id") Long boardId, Pageable pageable){
+        return service.getComments(boardId, pageable);
+    }
 }

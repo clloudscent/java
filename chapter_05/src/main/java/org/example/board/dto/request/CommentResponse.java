@@ -27,7 +27,6 @@ public class CommentResponse {
 
     // builder pattern
     public static class CommentResponseBuilder{
-
         private final CommentResponse response;
 
         private CommentResponseBuilder(){

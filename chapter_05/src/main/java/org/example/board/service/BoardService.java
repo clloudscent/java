@@ -35,6 +35,7 @@ public class BoardService {
         return boardRepository.findAll(pageable).map(BoardResponse::of);
     }
 
+    //게시판 생성
     public BoardDetailResponse createPost(PostBoardRequest body, BoardUser writer){
         Board board = new Board();
         board.setTitle(body.getTitle());
@@ -46,8 +47,11 @@ public class BoardService {
         return BoardDetailResponse.of(board);
     }
 
+
+
+
     // 댓글 조회 기능
-    public Page<CommentResponse> getCommentsByBoardId(Long boardId, Pageable pageable) {
+    public Page<CommentResponse> getComments(Long boardId, Pageable pageable) {
         return commentRepository.findByBoardId(boardId, pageable)
                 .map(comment -> CommentResponse.builder()
                         .id(comment.getId())
