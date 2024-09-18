@@ -1,5 +1,7 @@
 package org.example.board.dto.request;
 
+import org.example.board.entity.Comment;
+
 import java.time.LocalDateTime;
 
 public class CommentResponse {
@@ -21,6 +23,13 @@ public class CommentResponse {
 
     private CommentResponse(){}
 
+    public static CommentResponse of(Comment comment){
+        CommentResponse response = new CommentResponse();
+        response.id = comment.getId();
+        response.content = comment.getContent();
+        response.createdAt = comment.getCreatedAt();
+        return response;
+    }
     public static CommentResponseBuilder builder(){
         return new CommentResponseBuilder();
     }

@@ -105,4 +105,7 @@ public class Board {
         return Objects.hashCode(this.id);
     }
 
+    public void addViewCount() {
+        this.viewCount++;
+    }
 }
