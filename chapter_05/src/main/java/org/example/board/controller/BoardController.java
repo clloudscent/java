@@ -59,12 +59,18 @@ public class BoardController {
     }
 
     @DeleteMapping ("/{board-id}/comment/{comment-id}")
-    public ResponseEntity<Void> deleteComment(HttpSession session, @PathVariable("board-id") Long boardId, @PathVariable("comment-id") Long commentId){
-        return service.deleteComment((BoardUser)session.getAttribute("auth"), boardId, commentId);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteComment(HttpSession session, @PathVariable("board-id") Long boardId, @PathVariable("comment-id") Long commentId){
+        service.deleteComment((BoardUser)session.getAttribute("auth"), boardId, commentId);
     }
 
     @GetMapping("/{board-id}/comment")
     public Page<CommentResponse> getComment(@PathVariable("board-id") Long boardId, Pageable pageable){
         return service.getComments(boardId, pageable);
+    }
+
+    @GetMapping("/throw")
+    public BoardDetailResponse test(){
+        throw new RuntimeException("this api for throw test");
     }
 }

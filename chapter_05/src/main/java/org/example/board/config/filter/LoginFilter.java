@@ -13,9 +13,11 @@ import org.example.board.dto.response.CommonResponse;
 import org.example.board.entity.BoardUser;
 import org.example.board.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 public class LoginFilter implements Filter {
     private final UserService userService;
@@ -71,6 +73,8 @@ public class LoginFilter implements Filter {
     private void sendResponse(HttpServletResponse response, HttpStatus status, String body){
         try(Writer writer = response.getWriter()){
             response.setStatus(status.value());
+            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             writer.write(body);
             writer.flush();
         } catch (IOException e) {
@@ -79,4 +83,6 @@ public class LoginFilter implements Filter {
     }
 }
 //로그인된 회원만 CRUD
+
 //로그인 failcountfilter logincheckfilter authentication
+

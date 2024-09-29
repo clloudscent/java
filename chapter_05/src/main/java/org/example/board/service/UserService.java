@@ -5,6 +5,7 @@ import org.example.board.dto.request.LoginRequest;
 import org.example.board.dto.request.SignupRequest;
 import org.example.board.dto.response.CommonResponse;
 import org.example.board.entity.BoardUser;
+import org.example.board.exception.ConflictException;
 import org.example.board.repository.BoardUserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,12 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<CommonResponse> signUp(SignupRequest body){
+    public CommonResponse signUp(SignupRequest body){
         BoardUser user = getUserInfo(body.getEmail());
 
         if(user != null){
             // {"message":"this email exists"}
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(CommonResponse.of("존재하는 Email"));
+            throw new ConflictException("이미 존재하는 email 입니다.");
         }
         user = new BoardUser();
 
@@ -34,7 +35,7 @@ public class UserService {
         user.setNewUser(body);
         repository.save(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.of("sign up complete!! plz try log in"));
+        return CommonResponse.of("sign up complete!! plz try log in");
     }
 
     public BoardUser getUserInfo(String email){

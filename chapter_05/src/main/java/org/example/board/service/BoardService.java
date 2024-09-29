@@ -7,12 +7,11 @@ import org.example.board.dto.response.BoardResponse;
 import org.example.board.entity.Board;
 import org.example.board.entity.BoardUser;
 import org.example.board.entity.Comment;
+import org.example.board.exception.NotFoundException;
 import org.example.board.repository.BoardRepository;
 import org.example.board.repository.CommentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -62,7 +61,7 @@ public class BoardService {
     }
 
     private Board getOne(Long id){
-        return boardRepository.findById(id).orElseThrow(null);
+        return boardRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     public Page<BoardResponse> getPage(Pageable pageable) {
@@ -117,13 +116,8 @@ public class BoardService {
     }
 
     // 댓글 삭제
-    public ResponseEntity<Void> deleteComment(BoardUser user, Long boardId, Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElse(null);
-        if (comment == null || !comment.getBoard().getId().equals(boardId) || !comment.getWriter().equals(user)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
+    public void deleteComment(BoardUser user, Long boardId, Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(NotFoundException::new);
         commentRepository.delete(comment);
-        return ResponseEntity.noContent().build();
     }
 }

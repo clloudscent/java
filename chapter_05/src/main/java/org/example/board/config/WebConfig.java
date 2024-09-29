@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public FilterRegistrationBean<AuthenticationFilter> setAuthenticationFilterBean(){
         FilterRegistrationBean<AuthenticationFilter> filterRegistrationBean = new FilterRegistrationBean<>();
-        filterRegistrationBean.setFilter(new AuthenticationFilter());
+        filterRegistrationBean.setFilter(new AuthenticationFilter(mapper));
         filterRegistrationBean.setOrder(0);
 
         filterRegistrationBean.addUrlPatterns("/api/board/*");
